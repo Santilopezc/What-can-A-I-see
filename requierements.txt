@@ -1,0 +1,6 @@
+speechrecognition
+pyaudio
+gradio
+transformers
+torch
+torchaudio
