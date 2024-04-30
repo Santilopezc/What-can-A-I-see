@@ -5,3 +5,5 @@ transformers
 torch
 torchaudio
 gTTS
+transformers
+PIL
