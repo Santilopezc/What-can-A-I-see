@@ -1,9 +1,0 @@
-speechrecognition
-pyaudio
-gradio
-transformers
-torch
-torchaudio
-gTTS
-PIL
-pygame
