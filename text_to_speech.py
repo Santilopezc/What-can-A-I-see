@@ -1,18 +1,11 @@
-
-#!pip install gTTS
 #https://gtts.readthedocs.io/en/latest/module.html#localized-accents for the language list
-
-
-# Import the required module for text
-# to speech conversion
 from gtts import gTTS
-
-# This module is imported so that we can
-# play the converted audio
+from pygame import mixer
+import time
 import os
 
 # The text that you want to convert to audio
-mytext = 'Deep learning project'
+mytext = 'What can AI see?'
 
 # Language in which you want to convert
 language = 'en'
@@ -23,9 +16,17 @@ language = 'en'
 # have a high speed
 myobj = gTTS(text=mytext, lang=language, slow=False)
 
-# Saving the converted audio in a mp3 file named
-# welcome
+# Saving the converted audio in a mp3 file 
 myobj.save("deeplearning.mp3")
 
 # Playing the converted file
-os.system("deeplearning.mp3")
+#os.system("deeplearning.mp3")
+
+# Play the audio
+mixer.init()
+mixer.music.load("deeplearning.mp3")
+mixer.music.play()
+
+# Wait for the audio to finish playing
+while mixer.music.get_busy():
+    time.sleep(0.1)
