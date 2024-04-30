@@ -4,3 +4,4 @@ gradio
 transformers
 torch
 torchaudio
+gTTS
