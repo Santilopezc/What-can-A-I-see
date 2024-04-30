@@ -5,9 +5,19 @@ import time
 r = sr.Recognizer()
 
 
-def transcribe(audio):
-    pass
-# Conversation loop
+def transcribe():
+    with sr.Microphone() as source:
+        print("Listening...")
+        r.adjust_for_ambient_noise(source)  # Optional: Adjust for ambient noise levels
+        audio = r.listen(source, timeout=5)
+
+    # Convert speech to text
+    print('finished listening')
+    user_input = r.recognize_google(audio)
+    print(user_input)
+    return user_input
+
+'''# Conversation loop
 while True:
     # Listen for user speech input
     with sr.Microphone() as source:
@@ -22,5 +32,5 @@ while True:
 
     if 'stop' in user_input:
         break
-    
+    '''
 

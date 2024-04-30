@@ -3,7 +3,9 @@ pyaudio
 gradio
 transformers
 torch
+torchvision
 torchaudio
 gTTS
 PIL
 pygame
+einops
