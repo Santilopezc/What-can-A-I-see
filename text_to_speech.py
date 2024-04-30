@@ -1,18 +1,10 @@
-
-#!pip install gTTS
 #https://gtts.readthedocs.io/en/latest/module.html#localized-accents for the language list
 
-
-# Import the required module for text
-# to speech conversion
 from gtts import gTTS
-
-# This module is imported so that we can
-# play the converted audio
 import os
 
 # The text that you want to convert to audio
-mytext = 'Deep learning project'
+mytext = 'What can AI see?'
 
 # Language in which you want to convert
 language = 'en'
@@ -23,8 +15,7 @@ language = 'en'
 # have a high speed
 myobj = gTTS(text=mytext, lang=language, slow=False)
 
-# Saving the converted audio in a mp3 file named
-# welcome
+# Saving the converted audio in a mp3 file 
 myobj.save("deeplearning.mp3")
 
 # Playing the converted file
