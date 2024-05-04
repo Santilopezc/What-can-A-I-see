@@ -5,5 +5,5 @@ from image_from_webcam import take_picture
 
 image = take_picture(res_width = 512, res_height = 512)
 prompt = transcribe()
-image_description = describe_image(prompt)
+image_description = describe_image(prompt, image)
 speak(image_description)
