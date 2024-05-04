@@ -3,7 +3,7 @@ from time import sleep
 
 # takes an image from the webcam of the computer
 # that it resizes it, save both the original and the resized images
-# return the resized image
+# return the path of the resized image
 
 def take_picture(res_width = 256, res_height = 256,
                  name_img = "image_for_description", format = ".jpg", 
@@ -49,4 +49,4 @@ def take_picture(res_width = 256, res_height = 256,
             cv2.destroyAllWindows()
             break
 
-    return img_resized
+    return name_img + "_resized" + format
