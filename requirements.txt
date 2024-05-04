@@ -9,3 +9,4 @@ gTTS
 PIL
 pygame
 einops
+opencv
