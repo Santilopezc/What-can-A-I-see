@@ -24,23 +24,7 @@ def capture_picture():
     return frame
 
 
-def trigger():
-   button_html = """
-                <button id='hello-button'>What can AI see?</button>
-                <style>
-                #hello-button {
-                    background-color: green;
-                    color: black;
-                    border-radius: 20px;
-                    width: 75%;
-                    transition: all 0.5s;
-                    font-size: 28px;
-                    font-weight : 700;
-                }
-                </style>
-                """
-   st.write(button_html, unsafe_allow_html=True)
-   return button_html
+
 
 def display():
     global state
@@ -93,114 +77,119 @@ def display():
     if save_description:
       num +=1
 
-    if state == "idle":
-      keyword = "hello"
-      r = sr.Recognizer()
-      with sr.Microphone() as source:
-          st.write("Listening for keyword...")
-          audio = r.listen(source)
-          try:
-              text = r.recognize_google(audio)
-              if keyword in text.lower():
-                st.write("Recording request...")
-                state = "listening"
 
-          except sr.UnknownValueError:
-              pass
-          except sr.RequestError as e:
-              st.error
-    
-    # if "What can AI see button is pressed"
-    #if start_button:
-    if state == "listening" or start_button:
-        state = "listening"
-        transcription = transcribe()
-        frame = capture_picture()
-        image_description = describe_image(transcription, "captured_image.jpg")
-    
-        #transcription = "This is the transcription" *10
-        #frame = "image_test.jpg"
-        #image = cv2.imread(frame)
-        #image_description = "This is the image description" *10000
-    
-        st.write("Your request has been successfully recorded! :alien:")
-    
-        st.header("Your transcription", divider="rainbow")
-    
-        # display audio transcription
-        with st.container(height=80):
-            st.markdown(transcription)
-    
-        # display image and description
-        with st.container():
-          col1, col2 = st.columns(2)
-    
-          with col1:
-            st.header("Your image :eyes:", divider="rainbow")
-            st.image(frame)
-    
-          with col2:
-            st.header("Image description :lips:", divider="rainbow")
-            with st.container(height=450):
-              st.markdown(image_description)
-    
-        speak(image_description)
-    
-    
-        #savings (only if selected)
-        if num != 0:
-          with st.container(height=50*num):
-            if save_image:
-                # save image
-                st.write("Your image has been saved! :penguin:")
-            if save_audio:
-                # save audio
-                st.write("Your audio has been saved! :penguin:")
-            if save_description:
-                # save description
-                st.write("Your description has been saved! :penguin:")
-        else:
-          with st.container(height=50):
-            st.write("Nothing has been saved :dizzy_face:")
+    with st.empty():
+      while True:
+
+        if state == "idle":
+          keyword = "hello"
+          r = sr.Recognizer()
+          with sr.Microphone() as source:
+              st.write("Listening for keyword...")
+              audio = r.listen(source)
+              try:
+                  text = r.recognize_google(audio)
+                  if keyword in text.lower():
+                    state = "listening"
+
+              except sr.UnknownValueError:
+                  pass
+              except sr.RequestError as e:
+                  pass
+                  #st.error
         
-        add_vertical_space(5)
-        with stylable_container(key="bottom",
-                                css_styles="""
-                    {
-                      padding : 0px;
-                      margin: 0px;
-                    }
-                    """,):
-          colx, coly = st.columns(2)
-    
-          with colx:
-            with stylable_container(
-                key="quotes",
-                css_styles="""
-                    {
-                      padding : 0px;
-                      margin: 0px;
-                      text-align: left;
-                    }
-                    """,
-            ):
-              st.write("This is a web app demo for the final project fo the course of Deep Learning @UGent")
-              st.write("Bermúdez Gregorio, Dokupil Michal, López Santiago, Plebani Paola and Ramcke David")
-    
-          with coly:
-            with stylable_container(
-                key="mention_github",
-                css_styles="""
-                    {text-align: right;
-                    }
-                    """,
-            ):
-              mention(
-              label="Code source",
-              icon="github",  
-              url="hhttps://github.com/Santilopezc/What-can-A-I-see",
-              )
-        state = "idle"
+        # if "What can AI see button is pressed"
+        #if start_button:
+        if state == "listening" or start_button:
+            state = "listening"
+            st.write("Recording request...")
+            transcription = transcribe()
+            frame = capture_picture()
+            
+            
+        
+            #transcription = "This is the transcription" *10
+            #frame = "image_test.jpg"
+            #image = cv2.imread(frame)
+            #image_description = "This is the image description" *10000
+            
+            st.write("Your request has been successfully recorded! :alien:")
+            st.header("Your transcription", divider="rainbow")
+            # display audio transcription
+            with st.container(height=80):
+                st.markdown(transcription)
+
+            # display image and description
+            with st.container():
+              col1, col2 = st.columns(2)
+        
+              with col1:
+                st.header("Your image :eyes:", divider="rainbow")
+                st.image(frame)
+        
+              with col2:
+                st.header("Image description :lips:", divider="rainbow")
+                with st.container(height=450):
+                  image_description = describe_image(transcription, "captured_image.jpg")
+                  st.markdown(image_description)
+        
+            speak(image_description)
+        
+        
+            #savings (only if selected)
+            if num != 0:
+              with st.container(height=50*num):
+                if save_image:
+                    # save image
+                    st.write("Your image has been saved! :penguin:")
+                if save_audio:
+                    # save audio
+                    st.write("Your audio has been saved! :penguin:")
+                if save_description:
+                    # save description
+                    st.write("Your description has been saved! :penguin:")
+            else:
+              with st.container(height=50):
+                st.write("Nothing has been saved :dizzy_face:")
+            
+            add_vertical_space(5)
+            with stylable_container(key="bottom",
+                                    css_styles="""
+                        {
+                          padding : 0px;
+                          margin: 0px;
+                        }
+                        """,):
+              colx, coly = st.columns(2)
+        
+              with colx:
+                with stylable_container(
+                    key="quotes",
+                    css_styles="""
+                        {
+                          padding : 0px;
+                          margin: 0px;
+                          text-align: left;
+                        }
+                        """,
+                ):
+                  st.write("This is a web app demo for the final project fo the course of Deep Learning @UGent")
+                  st.write("Bermúdez Gregorio, Dokupil Michal, López Santiago, Plebani Paola and Ramcke David")
+        
+              with coly:
+                with stylable_container(
+                    key="mention_github",
+                    css_styles="""
+                        {text-align: right;
+                        }
+                        """,
+                ):
+                  mention(
+                  label="Code source",
+                  icon="github",  
+                  url="hhttps://github.com/Santilopezc/What-can-A-I-see",
+                  )
+            state = "idle"
 
 
 # main:
