@@ -3,6 +3,7 @@ import cv2
 from speech_to_text import transcribe
 from description_model import describe_image
 from text_to_speech import speak
+import speech_recognition as sr
 
 from streamlit_extras.stylable_container import stylable_container
 from streamlit_extras.app_logo import add_logo
@@ -11,7 +12,7 @@ from streamlit_extras.add_vertical_space import add_vertical_space
 
 # Function to capture audio and picture
 def capture_picture():
-    cap = cv2.VideoCapture(1)  # Change index for different cameras
+    cap = cv2.VideoCapture(0)  # Change index for different cameras
     for _ in range(10):
         ret, frame = cap.read()
     # Now capture the frame
@@ -22,7 +23,27 @@ def capture_picture():
     cap.release()
     return frame
 
+
+def trigger():
+   button_html = """
+                <button id='hello-button'>What can AI see?</button>
+                <style>
+                #hello-button {
+                    background-color: green;
+                    color: black;
+                    border-radius: 20px;
+                    width: 75%;
+                    transition: all 0.5s;
+                    font-size: 28px;
+                    font-weight : 700;
+                }
+                </style>
+                """
+   st.write(button_html, unsafe_allow_html=True)
+   return button_html
+
 def display():
+    global state
     st.set_page_config(layout='wide')
     add_logo("logo.png", height = 300)
     
@@ -71,10 +92,28 @@ def display():
       num +=1
     if save_description:
       num +=1
+
+    if state == "idle":
+      keyword = "hello"
+      r = sr.Recognizer()
+      with sr.Microphone() as source:
+          st.write("Listening for keyword...")
+          audio = r.listen(source)
+          try:
+              text = r.recognize_google(audio)
+              if keyword in text.lower():
+                st.write("Recording request...")
+                state = "listening"
+
+          except sr.UnknownValueError:
+              pass
+          except sr.RequestError as e:
+              st.error
     
     # if "What can AI see button is pressed"
-    if start_button:
-    
+    #if start_button:
+    if state == "listening" or start_button:
+        state = "listening"
         transcription = transcribe()
         frame = capture_picture()
         image_description = describe_image(transcription, "captured_image.jpg")
@@ -161,7 +200,10 @@ def display():
               icon="github",  
               url="hhttps://github.com/Santilopezc/What-can-A-I-see",
               )
+        state = "idle"
 
 
 # main:
+
+state = "idle"  # values: "idle", "listening" maybe "processing"
 display()
