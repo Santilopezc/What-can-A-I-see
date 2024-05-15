@@ -33,7 +33,7 @@ def display():
     add_logo("logo.png", height = 300)
     
     # Display title and button
-    st.title("Audio Recorder & Picture Taker")
+    st.title("What can (A)I see? :eyes:")
     
     with stylable_container(
             key="container_buttons",
@@ -63,7 +63,7 @@ def display():
                 }
                 """,
         ):
-            start_button = st.button("What can AI see?")
+            start_button = st.button("Describe!")
       with colB:
         popover = st.popover("Settings")
         save_image = popover.checkbox("Save image", True)
@@ -77,6 +77,10 @@ def display():
       num +=1
     if save_description:
       num +=1
+
+    if start_button:
+       state = "listening"
+       start_button = False
 
     placeholder_text1 = st.empty()
     placeholder_text2 = st.empty()
@@ -146,7 +150,7 @@ def display():
       #if start_button:
       
       if state == "listening" or start_button:
-          state = "listening"
+          state = "idle"
           placeholder_text1.empty()
           placeholder_text2.empty()
           placeholder_transcription.empty()
